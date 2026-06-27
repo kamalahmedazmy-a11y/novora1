@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif; -webkit-font-smoothing:antialiased; color:#2a1f38; }
+  ::-webkit-scrollbar{ height:12px; width:12px; }
+  ::-webkit-scrollbar-thumb{ background:#d7cee6; border-radius:8px; border:3px solid transparent; background-clip:content-box; }
+</style>
+</helmet>
+
+<div style="min-width:100%; width:max-content; min-height:100vh; padding:40px 48px 72px; background: {{ canvasBg }}; box-sizing:border-box; font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;">
+
+  <!-- ===== CANVAS HEADER ===== -->
+  <div dir="{{ dir }}" style="display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; max-width:2680px; margin:0 auto 36px;">
+    <div style="display:flex; align-items:center; gap:18px;">
+      <img src="assets/novora-logo.png" alt="novora" style="height:34px; width:auto; display:block;">
+      <div style="width:1px; height:30px; background:#d8cfe6;"></div>
+      <div>
+        <div style="font-size:18px; font-weight:800; letter-spacing:-0.01em; color:#2a1f38;">{{ t.compareTitle }}</div>
+        <div style="font-size:13px; color:#8579a0; font-weight:500;">{{ t.compareSub }}</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span style="font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#9370DB;">{{ t.tagline }}</span>
+      <div style="display:flex; align-items:center; padding:4px; background:#fff; border:1px solid #e9e2f3; border-radius:12px; box-shadow:0 2px 8px rgba(80,40,120,.05);">
+        <button onClick="{{ toEn }}" style="{{ enPillStyle }}">EN</button>
+        <button onClick="{{ toAr }}" style="{{ arPillStyle }}">ع</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARDS ROW ===== -->
+  <div style="display:flex; gap:48px; align-items:flex-start; margin-bottom:64px;">
+
+    <!-- ===== TEACHER DASHBOARD FRAME ===== -->
+    <div style="flex:none; width:1280px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#8579a0; margin-bottom:12px; padding-inline-start:2px;">{{ t.frameTeacher }}</div>
+      <div dir="{{ dir }}" style="background:#fbfaff; border-radius:18px; overflow:hidden; box-shadow:0 1px 3px rgba(40,20,60,.08), 0 24px 60px -24px rgba(80,40,120,.28); border:1px solid #efeaf7; display:flex; height:884px;">
+
+        <!-- sidebar -->
+        <div style="flex:none; width:236px; background:#fff; border-inline-end:1px solid #f0ecf6; padding:22px 16px; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; gap:10px; padding:0 8px 22px;">
+            <img src="assets/novora-logo.png" alt="novora" style="height:22px; width:auto;">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; background:#663399; color:#fff; font-weight:600; font-size:14px; box-shadow:0 6px 16px -4px rgba(102,51,153,.5);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+              <span>{{ t.nav.dashboard }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+              <span>{{ t.nav.schedule }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <span>{{ t.nav.attendance }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+              <span>{{ t.nav.exams }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></svg>
+              <span>{{ t.nav.students }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="1"/><rect x="12" y="7" width="3" height="10" rx="1"/><rect x="17" y="13" width="3" height="4" rx="1"/></svg>
+              <span>{{ t.nav.reports }}</span>
+            </div>
+          </div>
+          <div style="margin-top:auto; padding:14px; border-radius:14px; background:linear-gradient(150deg,#f3edfb,#faf0e6);">
+            <div style="font-size:13px; font-weight:700; color:#663399; margin-bottom:4px;">{{ t.helpTitle }}</div>
+            <div style="font-size:12px; color:#8579a0; line-height:1.45; margin-bottom:10px;">{{ t.helpSub }}</div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:30px; height:30px; border-radius:9px; background:#663399; display:flex; align-items:center; justify-content:center;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+              </div>
+              <span style="font-size:12px; font-weight:600; color:#6b5b7e;">{{ t.helpChat }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- main -->
+        <div style="flex:1; display:flex; flex-direction:column; min-width:0;">
+          <!-- topbar -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 26px; border-bottom:1px solid #f0ecf6; background:#fff;">
+            <div style="display:flex; align-items:center; gap:12px; flex:1; max-width:340px; background:#f6f3fb; border:1px solid #efeaf7; border-radius:11px; padding:9px 13px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9b8fb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+              <span style="font-size:13px; color:#9b8fb0;">{{ t.search }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:#f3edfb; color:#663399; font-size:12px; font-weight:700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9.2 8.6 2 9.2l5.5 4.7L5.8 21 12 17l6.2 4-1.7-7.1L22 9.2l-7.2-.6z"/></svg>
+                {{ t.roleTeacher }}
+              </span>
+              <div style="position:relative; width:40px; height:40px; border-radius:11px; background:#f6f3fb; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#6b5b7e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+                <span style="position:absolute; top:7px; inset-inline-end:8px; width:8px; height:8px; border-radius:50%; background:#9370DB; border:2px solid #f6f3fb;"></span>
+              </div>
+              <div style="display:flex; align-items:center; gap:9px;">
+                <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(140deg,#663399,#9370DB); color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;">{{ teacherInitials }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- scroll body -->
+          <div style="flex:1; overflow:hidden; padding:24px 26px; display:flex; flex-direction:column; gap:20px;">
+            <div>
+              <div>
+                <div style="font-size:22px; font-weight:800; letter-spacing:-0.01em; white-space:nowrap;">{{ t.teacherTitle }}</div>
+                <div style="font-size:13px; color:#8579a0; font-weight:500; margin-top:2px;">{{ t.teacherSub }}</div>
+              </div>
+            </div>
+
+            <!-- stat cards -->
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div style="width:34px; height:34px; border-radius:10px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+                  </div>
+                </div>
+                <div style="font-size:28px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">5</div>
+                <div style="font-size:12.5px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.classes }}</div>
+              </div>
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                </div>
+                <div style="font-size:28px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">142<span style="font-size:16px; color:#8a7ba3;">/150</span></div>
+                <div style="font-size:12.5px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.present }}</div>
+              </div>
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                </div>
+                <div style="font-size:28px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">3</div>
+                <div style="font-size:12.5px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.grading }}</div>
+              </div>
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 2 4-6"/></svg>
+                </div>
+                <div style="font-size:28px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">94<span style="font-size:16px; color:#8a7ba3;">%</span></div>
+                <div style="font-size:12.5px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.avgAtt }}</div>
+              </div>
+            </div>
+
+            <!-- chart + schedule -->
+            <div style="display:grid; grid-template-columns:1fr 1.15fr; gap:20px;">
+              <!-- weekly attendance chart -->
+              <div style="background:#fff; border:1px solid #f0ecf6; border-radius:16px; padding:18px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+                  <div style="font-size:14px; font-weight:700;">{{ t.weeklyAttendance }}</div>
+                  <span style="font-size:11px; font-weight:700; color:#663399; background:#f3edfb; padding:4px 9px; border-radius:999px;">{{ t.thisWeek }}</span>
+                </div>
+                <div style="display:flex; align-items:flex-end; gap:14px; height:160px; padding-top:6px;">
+                  <sc-for list="{{ attBars }}" as="bar" hint-placeholder-count="5">
+                    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+                      <div style="font-size:11px; font-weight:700; color:#8579a0;">{{ bar.val }}%</div>
+                      <div style="width:100%; max-width:34px; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,#9370DB,#663399); height: {{ bar.h }}%;"></div>
+                      <div style="font-size:11px; font-weight:600; color:#9b8fb0;">{{ bar.day }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <!-- schedule grid -->
+              <div style="background:#fff; border:1px solid #f0ecf6; border-radius:16px; padding:18px; min-width:0;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                  <div style="font-size:14px; font-weight:700;">{{ t.schedule }}</div>
+                </div>
+                <div style="display:grid; grid-template-columns:auto repeat(5,1fr); gap:6px;">
+                  <div></div>
+                  <sc-for list="{{ scheduleDays }}" as="d" hint-placeholder-count="5">
+                    <div style="text-align:center; font-size:10.5px; font-weight:700; color:#9b8fb0; padding-bottom:2px;">{{ d }}</div>
+                  </sc-for>
+                  <sc-for list="{{ scheduleRows }}" as="row" hint-placeholder-count="4">
+                    <div style="font-size:10px; font-weight:600; color:#b3a9c4; display:flex; align-items:center; padding-inline-end:4px;">{{ row.time }}</div>
+                    <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="5">
+                      <div style="border-radius:7px; padding:7px 4px; text-align:center; font-size:10px; font-weight:700; color:#fff; line-height:1.15; background: {{ cell.color }};">{{ cell.label }}</div>
+                    </sc-for>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <!-- bulk attendance + exam builder -->
+            <div style="display:grid; grid-template-columns:1.25fr 1fr; gap:20px;">
+              <!-- attendance checklist -->
+              <div style="background:#fff; border:1px solid #f0ecf6; border-radius:16px; padding:18px; display:flex; flex-direction:column;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                  <div>
+                    <div style="font-size:14px; font-weight:700;">{{ t.attendanceTitle }}</div>
+                    <div style="font-size:12px; color:#8579a0; margin-top:2px;"><b style="color:#663399;">{{ presentCount }}</b>/{{ totalCount }} {{ t.present }}</div>
+                  </div>
+                  <button onClick="{{ markAll }}" style="border:none; background:#f3edfb; color:#663399; font-weight:700; font-size:12px; padding:8px 13px; border-radius:9px; cursor:pointer; font-family:inherit;" style-hover="background:#e9def8;">{{ t.markAll }}</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:7px;">
+                  <sc-for list="{{ students }}" as="st" hint-placeholder-count="6">
+                    <div style="display:flex; align-items:center; gap:11px; padding:7px 9px; border-radius:10px; background:#fbfaff; border:1px solid #f3effa;">
+                      <div style="width:30px; height:30px; border-radius:9px; background: {{ st.avatarBg }}; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none;">{{ st.initials }}</div>
+                      <span style="font-size:12.5px; font-weight:600; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ st.name }}</span>
+                      <div style="display:flex; gap:5px;">
+                        <button onClick="{{ st.setPresent }}" style="{{ st.presentBtn }}">{{ t.presentShort }}</button>
+                        <button onClick="{{ st.setAbsent }}" style="{{ st.absentBtn }}">{{ t.absentShort }}</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <button onClick="{{ sendNotif }}" style="margin-top:14px; border:none; background:#663399; color:#fff; font-weight:700; font-size:13px; padding:11px; border-radius:11px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:8px;" style-hover="background:#56297f;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+                  {{ t.sendNotif }}
+                </button>
+                <sc-if value="{{ notifSent }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:10px; display:flex; align-items:center; gap:8px; padding:9px 11px; border-radius:10px; background:#FFFDD0; border:1px solid #f0ecae;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8a7a16" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span style="font-size:12px; font-weight:600; color:#7a6c14;">{{ t.notifConfirm }}</span>
+                  </div>
+                </sc-if>
+              </div>
+
+              <!-- exam builder -->
+              <div style="background:#fff; border:1px solid #f0ecf6; border-radius:16px; padding:18px; display:flex; flex-direction:column;">
+                <div style="font-size:14px; font-weight:700; margin-bottom:14px;">{{ t.examBuilder }}</div>
+                <div style="display:flex; flex-direction:column; gap:9px; flex:1;">
+                  <div style="border:1px solid #f0ecf6; border-radius:11px; padding:11px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                      <span style="width:20px; height:20px; border-radius:6px; background:#663399; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;">1</span>
+                      <span style="font-size:12.5px; font-weight:600; color:#5a4a70;">{{ t.q1 }}</span>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                      <span style="font-size:11px; font-weight:600; color:#663399; background:#f3edfb; padding:4px 9px; border-radius:7px;">MCQ</span>
+                      <span style="font-size:11px; font-weight:600; color:#8579a0; background:#f6f3fb; padding:4px 9px; border-radius:7px;">5 {{ t.pts }}</span>
+                    </div>
+                  </div>
+                  <div style="border:1px solid #f0ecf6; border-radius:11px; padding:11px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                      <span style="width:20px; height:20px; border-radius:6px; background:#9370DB; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;">2</span>
+                      <span style="font-size:12.5px; font-weight:600; color:#5a4a70;">{{ t.q2 }}</span>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                      <span style="font-size:11px; font-weight:600; color:#663399; background:#f3edfb; padding:4px 9px; border-radius:7px;">{{ t.essay }}</span>
+                      <span style="font-size:11px; font-weight:600; color:#8579a0; background:#f6f3fb; padding:4px 9px; border-radius:7px;">10 {{ t.pts }}</span>
+                    </div>
+                  </div>
+                  <button style="border:1.5px dashed #cbbce4; background:transparent; color:#8579a0; font-weight:600; font-size:12.5px; padding:11px; border-radius:11px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:7px;" style-hover="border-color:#9370DB; color:#663399;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                    {{ t.addQuestion }}
+                  </button>
+                </div>
+                <button style="margin-top:12px; border:none; background:#E6E6FA; color:#663399; font-weight:700; font-size:13px; padding:11px; border-radius:11px; cursor:pointer; font-family:inherit;" style-hover="background:#ddd9f5;">{{ t.publish }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ===== STUDENT DASHBOARD FRAME ===== -->
+    <div style="flex:none; width:1280px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#8579a0; margin-bottom:12px; padding-inline-start:2px;">{{ t.frameStudent }}</div>
+      <div dir="{{ dir }}" style="background:#fbfaff; border-radius:18px; overflow:hidden; box-shadow:0 1px 3px rgba(40,20,60,.08), 0 24px 60px -24px rgba(80,40,120,.28); border:1px solid #efeaf7; display:flex; height:884px;">
+
+        <!-- sidebar -->
+        <div style="flex:none; width:236px; background:#fff; border-inline-end:1px solid #f0ecf6; padding:22px 16px; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; gap:10px; padding:0 8px 22px;">
+            <img src="assets/novora-logo.png" alt="novora" style="height:22px; width:auto;">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; background:#663399; color:#fff; font-weight:600; font-size:14px; box-shadow:0 6px 16px -4px rgba(102,51,153,.5);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+              <span>{{ t.nav.dashboard }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span>{{ t.nav.subjects }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+              <span>{{ t.nav.schedule }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+              <span>{{ t.nav.exams }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+              <span>{{ t.nav.leaderboard }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; color:#6b5b7e; font-weight:600; font-size:14px; cursor:pointer;" style-hover="background:#f5f1fb;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>
+              <span>{{ t.nav.badges }}</span>
+            </div>
+          </div>
+          <div style="margin-top:auto; padding:16px 14px; border-radius:14px; background:linear-gradient(150deg,#663399,#9370DB); color:#fff;">
+            <div style="font-size:12px; font-weight:600; opacity:.85;">{{ t.stat.streak }}</div>
+            <div style="display:flex; align-items:center; gap:7px; margin-top:6px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFDD0" stroke="none"><path d="M12 2c1 3-1 4-1 6a3 3 0 0 0 6 .5c1.5 2 2 3.5 2 5.5a7 7 0 0 1-14 0c0-3 2-5 3-7 1.5 1 2 2 2 3 .8-2 .5-4 2-8z"/></svg>
+              <span style="font-size:26px; font-weight:800; line-height:1;">12</span>
+              <span style="font-size:13px; font-weight:600; opacity:.9; padding-bottom:3px;">days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- main -->
+        <div style="flex:1; display:flex; flex-direction:column; min-width:0;">
+          <!-- topbar -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 26px; border-bottom:1px solid #f0ecf6; background:#fff;">
+            <div style="display:flex; align-items:center; gap:12px; flex:1; max-width:340px; background:#f6f3fb; border:1px solid #efeaf7; border-radius:11px; padding:9px 13px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9b8fb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+              <span style="font-size:13px; color:#9b8fb0;">{{ t.search }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:#fdf6d6; color:#8a6d12; font-size:12px; font-weight:700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9.2 8.6 2 9.2l5.5 4.7L5.8 21 12 17l6.2 4-1.7-7.1L22 9.2l-7.2-.6z"/></svg>
+                {{ t.roleStudent }}
+              </span>
+              <div style="position:relative; width:40px; height:40px; border-radius:11px; background:#f6f3fb; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#6b5b7e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+                <span style="position:absolute; top:7px; inset-inline-end:8px; width:8px; height:8px; border-radius:50%; background:#9370DB; border:2px solid #f6f3fb;"></span>
+              </div>
+              <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(140deg,#5b3a8a,#9370DB); color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;">YK</div>
+            </div>
+          </div>
+
+          <!-- body -->
+          <div style="flex:1; overflow:hidden; padding:24px 26px; display:flex; flex-direction:column; gap:18px;">
+            <!-- greeting + xp -->
+            <div style="display:flex; align-items:center; gap:20px; justify-content:space-between;">
+              <div>
+                <div style="font-size:22px; font-weight:800; letter-spacing:-0.01em; white-space:nowrap;">{{ t.studentTitle }}</div>
+                <div style="font-size:13px; color:#8579a0; font-weight:500; margin-top:2px;">{{ t.studentSub }}</div>
+              </div>
+              <div style="flex:1; max-width:320px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                  <span style="font-size:11.5px; font-weight:700; color:#663399;">Level 7</span>
+                  <span style="font-size:11.5px; font-weight:600; color:#9b8fb0;">{{ t.xpToNext }}</span>
+                </div>
+                <div style="height:9px; border-radius:999px; background:#ece6f4; overflow:hidden;">
+                  <div style="height:100%; width:78%; border-radius:999px; background:linear-gradient(90deg,#9370DB,#663399);"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- stat cards -->
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+              <div style="background:linear-gradient(150deg,#663399,#7c4fb0); border-radius:14px; padding:16px; color:#fff;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFFDD0" stroke="none"><path d="M12 2L9.2 8.6 2 9.2l5.5 4.7L5.8 21 12 17l6.2 4-1.7-7.1L22 9.2l-7.2-.6z"/></svg>
+                  </div>
+                </div>
+                <div style="font-size:26px; font-weight:800; margin-top:12px; line-height:1;">2,450</div>
+                <div style="font-size:12px; opacity:.85; font-weight:600; margin-top:5px;">{{ t.stat.xp }}</div>
+              </div>
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="width:32px; height:32px; border-radius:9px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+                </div>
+                <div style="font-size:26px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">7</div>
+                <div style="font-size:12px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.level }}</div>
+              </div>
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="width:32px; height:32px; border-radius:9px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>
+                </div>
+                <div style="font-size:26px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">#3</div>
+                <div style="font-size:12px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.rank }}</div>
+              </div>
+              <div style="background:#E6E6FA; border-radius:14px; padding:16px;">
+                <div style="width:32px; height:32px; border-radius:9px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#663399" stroke="none"><path d="M12 2c1 3-1 4-1 6a3 3 0 0 0 6 .5c1.5 2 2 3.5 2 5.5a7 7 0 0 1-14 0c0-3 2-5 3-7 1.5 1 2 2 2 3 .8-2 .5-4 2-8z"/></svg>
+                </div>
+                <div style="font-size:26px; font-weight:800; color:#3a2256; margin-top:12px; line-height:1;">12</div>
+                <div style="font-size:12px; color:#6b5b7e; font-weight:600; margin-top:5px;">{{ t.stat.streak }}</div>
+              </div>
+            </div>
+
+            <!-- two columns -->
+            <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:18px; min-height:0;">
+              <!-- left: subjects -->
+              <div style="display:flex; flex-direction:column; gap:14px; min-width:0;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <div style="font-size:15px; font-weight:800;">{{ t.mySubjects }}</div>
+                  <span style="font-size:12px; font-weight:700; color:#663399; cursor:pointer;">{{ t.viewAll }}</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                  <sc-for list="{{ subjects }}" as="sub" hint-placeholder-count="4">
+                    <div style="background:#fff; border:1px solid #f0ecf6; border-radius:14px; padding:15px;">
+                      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                        <div style="width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; background: {{ sub.color }};">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <div style="min-width:0;">
+                          <div style="font-size:13.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ sub.name }}</div>
+                          <div style="font-size:11px; color:#9b8fb0; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ sub.chapter }}</div>
+                        </div>
+                      </div>
+                      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                        <span style="font-size:11px; font-weight:700; color:#8579a0;">{{ sub.pct }}%</span>
+                        <span style="font-size:11px; font-weight:700; color:#663399;">{{ t.continue }} →</span>
+                      </div>
+                      <div style="height:7px; border-radius:999px; background:#f0ecf6; overflow:hidden;">
+                        <div style="height:100%; border-radius:999px; background:linear-gradient(90deg,#9370DB,#663399); width: {{ sub.pct }}%;"></div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <!-- badges -->
+                <div style="background:#fff; border:1px solid #f0ecf6; border-radius:14px; padding:15px;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:13px;">
+                    <div style="font-size:14px; font-weight:800;">{{ t.myBadges }}</div>
+                    <span style="font-size:12px; font-weight:600; color:#9b8fb0;">{{ t.badgesEarned }}</span>
+                  </div>
+                  <div style="display:flex; gap:10px; justify-content:space-between;">
+                    <sc-for list="{{ badges }}" as="bg" hint-placeholder-count="6">
+                      <div style="display:flex; flex-direction:column; align-items:center; gap:7px; flex:1; min-width:0;">
+                        <div style="width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; background: {{ bg.badgeBg }}; opacity: {{ bg.op }};">
+                          <sc-if value="{{ bg.earned }}" hint-placeholder-val="{{ true }}">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="#663399" stroke="none"><path d="M12 2L9.2 8.6 2 9.2l5.5 4.7L5.8 21 12 17l6.2 4-1.7-7.1L22 9.2l-7.2-.6z"/></svg>
+                          </sc-if>
+                          <sc-if value="{{ bg.locked }}" hint-placeholder-val="{{ false }}">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b3a9c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                          </sc-if>
+                        </div>
+                        <span style="font-size:9.5px; font-weight:600; color:#8579a0; text-align:center; line-height:1.15; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%;">{{ bg.name }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+
+              <!-- right: leaderboard -->
+              <div style="background:#fff; border:1px solid #f0ecf6; border-radius:16px; padding:18px; display:flex; flex-direction:column; min-width:0;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                  <div style="font-size:15px; font-weight:800;">{{ t.classLeaderboard }}</div>
+                  <span style="font-size:11px; font-weight:700; color:#663399; background:#f3edfb; padding:4px 9px; border-radius:999px;">{{ t.thisMonth }}</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:7px;">
+                  <sc-for list="{{ leaders }}" as="ld" hint-placeholder-count="6">
+                    <div style="display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:11px; background: {{ ld.rowBg }}; border: {{ ld.rowBorder }};">
+                      <div style="width:24px; text-align:center; font-size:13px; font-weight:800; color: {{ ld.rankColor }};">{{ ld.rankLabel }}</div>
+                      <div style="width:34px; height:34px; border-radius:10px; background: {{ ld.avatarBg }}; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none;">{{ ld.initials }}</div>
+                      <div style="flex:1; min-width:0;">
+                        <div style="font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ ld.name }}</div>
+                        <div style="font-size:11px; color:#9b8fb0; font-weight:600;">{{ ld.xpLabel }}</div>
+                      </div>
+                      <sc-if value="{{ ld.me }}" hint-placeholder-val="{{ false }}">
+                        <span style="font-size:10px; font-weight:800; color:#fff; background:#663399; padding:3px 8px; border-radius:999px;">{{ t.you }}</span>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STAT CARD VARIATIONS ===== -->
+  <div dir="{{ dir }}" style="margin-bottom:58px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+      <div style="font-size:16px; font-weight:800; color:#2a1f38;">{{ t.statVariations }}</div>
+      <div style="flex:1; height:1px; background:#ddd5e8;"></div>
+    </div>
+    <div style="display:flex; gap:48px; align-items:flex-start;">
+
+      <!-- A: solid lavender -->
+      <div style="flex:none; width:300px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vSolid }}</div>
+        <div style="background:#E6E6FA; border-radius:16px; padding:20px;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+            <div style="width:40px; height:40px; border-radius:12px; background:#fff; display:flex; align-items:center; justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            </div>
+            <span style="font-size:11px; font-weight:700; color:#663399; background:#fff; padding:5px 10px; border-radius:999px;">+6%</span>
+          </div>
+          <div style="font-size:34px; font-weight:800; color:#3a2256; margin-top:16px; line-height:1;">142<span style="font-size:18px; color:#8a7ba3;">/150</span></div>
+          <div style="font-size:13px; color:#6b5b7e; font-weight:600; margin-top:6px;">{{ t.present6 }}</div>
+        </div>
+      </div>
+
+      <!-- B: icon + trend -->
+      <div style="flex:none; width:300px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vIcon }}</div>
+        <div style="background:#fff; border:1px solid #ece6f4; border-radius:16px; padding:20px; box-shadow:0 8px 24px -16px rgba(80,40,120,.4);">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:44px; height:44px; border-radius:13px; background:linear-gradient(150deg,#663399,#9370DB); display:flex; align-items:center; justify-content:center;">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            </div>
+            <div>
+              <div style="font-size:13px; color:#8579a0; font-weight:600;">{{ t.present6 }}</div>
+              <div style="font-size:26px; font-weight:800; color:#2a1f38; line-height:1.1;">142<span style="font-size:15px; color:#a99cbe;">/150</span></div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:16px;">
+            <span style="display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; color:#5b8a3a; background:#eef6e6; padding:4px 9px; border-radius:999px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>6%
+            </span>
+            <span style="font-size:12px; color:#9b8fb0; font-weight:500;">{{ t.trend }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: gradient + sparkline -->
+      <div style="flex:none; width:300px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vGradient }}</div>
+        <div style="background:linear-gradient(150deg,#663399,#7c4fb0); border-radius:16px; padding:20px; color:#fff; box-shadow:0 12px 28px -16px rgba(102,51,153,.7); overflow:hidden;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+            <div>
+              <div style="font-size:13px; opacity:.85; font-weight:600;">{{ t.present6 }}</div>
+              <div style="font-size:32px; font-weight:800; line-height:1.2;">142<span style="font-size:17px; opacity:.7;">/150</span></div>
+            </div>
+            <span style="font-size:11px; font-weight:700; background:rgba(255,255,255,.2); padding:5px 10px; border-radius:999px;">+6%</span>
+          </div>
+          <svg width="100%" height="44" viewBox="0 0 260 44" preserveAspectRatio="none" style="margin-top:14px; display:block;">
+            <defs><linearGradient id="spk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDD0" stop-opacity="0.45"/><stop offset="1" stop-color="#FFFDD0" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 34 L40 28 L80 32 L120 20 L160 24 L200 12 L260 6 L260 44 L0 44 Z" fill="url(#spk)"/>
+            <path d="M0 34 L40 28 L80 32 L120 20 L160 24 L200 12 L260 6" fill="none" stroke="#FFFDD0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LEADERBOARD VARIATIONS ===== -->
+  <div dir="{{ dir }}" style="margin-bottom:58px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+      <div style="font-size:16px; font-weight:800; color:#2a1f38;">{{ t.leaderboardVariations }}</div>
+      <div style="flex:1; height:1px; background:#ddd5e8;"></div>
+    </div>
+    <div style="display:flex; gap:48px; align-items:flex-start;">
+
+      <!-- A: podium -->
+      <div style="flex:none; width:380px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vPodium }}</div>
+        <div style="background:#fff; border:1px solid #ece6f4; border-radius:16px; padding:22px 20px; box-shadow:0 8px 24px -16px rgba(80,40,120,.4);">
+          <div style="display:flex; align-items:flex-end; justify-content:center; gap:14px; height:200px;">
+            <sc-for list="{{ podium }}" as="p" hint-placeholder-count="3">
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:8px;">
+                <sc-if value="{{ p.crown }}" hint-placeholder-val="{{ false }}">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9A227" stroke="none"><path d="M3 7l4 4 5-6 5 6 4-4v11H3z"/></svg>
+                </sc-if>
+                <div style="width:54px; height:54px; border-radius:50%; background: {{ p.avatarBg }}; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; border:3px solid {{ p.rankColor }};">{{ p.initials }}</div>
+                <div style="font-size:12px; font-weight:700; text-align:center; line-height:1.2; white-space:nowrap;">{{ p.name }}</div>
+                <div style="font-size:11px; font-weight:700; color:#9b8fb0;">{{ p.xpShort }}</div>
+                <div style="width:100%; border-radius:10px 10px 0 0; background:linear-gradient(180deg,#9370DB,#663399); display:flex; align-items:flex-start; justify-content:center; padding-top:8px; color:#fff; font-size:18px; font-weight:800; height: {{ p.barH }}px;">{{ p.rank }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: ranked list -->
+      <div style="flex:none; width:380px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vList }}</div>
+        <div style="background:#fff; border:1px solid #ece6f4; border-radius:16px; padding:16px; box-shadow:0 8px 24px -16px rgba(80,40,120,.4);">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <sc-for list="{{ leaders }}" as="ld" hint-placeholder-count="6">
+              <div style="display:flex; align-items:center; gap:11px; padding:8px 10px; border-radius:11px; background: {{ ld.rowBg }}; border: {{ ld.rowBorder }};">
+                <div style="width:22px; text-align:center; font-size:13px; font-weight:800; color: {{ ld.rankColor }};">{{ ld.rankLabel }}</div>
+                <div style="width:32px; height:32px; border-radius:9px; background: {{ ld.avatarBg }}; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none;">{{ ld.initials }}</div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:12.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ ld.name }}</div>
+                  <div style="height:5px; border-radius:999px; background:#f0ecf6; margin-top:5px; overflow:hidden;">
+                    <div style="height:100%; border-radius:999px; background:linear-gradient(90deg,#9370DB,#663399); width: {{ ld.barW }}%;"></div>
+                  </div>
+                </div>
+                <div style="font-size:11.5px; font-weight:700; color:#663399; flex:none;">{{ ld.xpShort }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: your standing -->
+      <div style="flex:none; width:380px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vMe }}</div>
+        <div style="background:linear-gradient(160deg,#3a2256,#663399); border-radius:16px; padding:22px; color:#fff; box-shadow:0 12px 28px -16px rgba(102,51,153,.7);">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:12px; opacity:.8; font-weight:600;">{{ t.classLeaderboard }}</div>
+              <div style="font-size:40px; font-weight:800; line-height:1.1;">#3</div>
+            </div>
+            <div style="width:60px; height:60px; border-radius:16px; background:rgba(255,255,255,.16); display:flex; align-items:center; justify-content:center;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFDD0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+            </div>
+          </div>
+          <div style="margin-top:18px; background:rgba(255,255,255,.1); border-radius:13px; padding:6px;">
+            <sc-for list="{{ nearMe }}" as="nm" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:10px; background: {{ nm.meBg }};">
+                <div style="width:22px; font-size:13px; font-weight:800; text-align:center; opacity:.9;">{{ nm.rank }}</div>
+                <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,.2); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;">{{ nm.initials }}</div>
+                <div style="flex:1; font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ nm.name }}</div>
+                <div style="font-size:12px; font-weight:700; opacity:.9;">{{ nm.xpShort }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:14px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFDD0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            <span style="font-size:12.5px; font-weight:600; opacity:.9;">{{ t.xpToNext }} → #2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BUS STATUS VARIATIONS ===== -->
+  <div dir="{{ dir }}" style="margin-bottom:24px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+      <div style="font-size:16px; font-weight:800; color:#2a1f38;">{{ t.busVariations }}</div>
+      <div style="flex:1; height:1px; background:#ddd5e8;"></div>
+    </div>
+    <div style="display:flex; gap:48px; align-items:flex-start;">
+
+      <!-- A: route timeline -->
+      <div style="flex:none; width:380px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vRoute }}</div>
+        <div style="background:#fff; border:1px solid #ece6f4; border-radius:16px; padding:20px; box-shadow:0 8px 24px -16px rgba(80,40,120,.4);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+            <div>
+              <div style="font-size:14px; font-weight:800;">{{ t.bus.route }}</div>
+              <div style="font-size:11.5px; color:#9b8fb0; font-weight:500; margin-top:2px;">{{ t.bus.driver }}</div>
+            </div>
+            <div style="width:38px; height:38px; border-radius:11px; background:#f3edfb; display:flex; align-items:center; justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M6 9h12"/><circle cx="7.5" cy="16" r="0.5"/></svg>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column;">
+            <sc-for list="{{ stopsView }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex; gap:13px;">
+                <div style="display:flex; flex-direction:column; align-items:center; flex:none;">
+                  <div style="width:15px; height:15px; border-radius:50%; background: {{ s.dot }}; border:3px solid #fff; box-shadow:0 0 0 2px {{ s.dot }};"></div>
+                  <sc-if value="{{ s.notLast }}" hint-placeholder-val="{{ true }}">
+                    <div style="width:2px; flex:1; min-height:26px; background:#ece6f4;"></div>
+                  </sc-if>
+                </div>
+                <div style="flex:1; padding-bottom:18px;">
+                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <span style="font-size:13px; font-weight:700;">{{ s.name }}</span>
+                    <span style="font-size:11px; font-weight:600; color:#9b8fb0;">{{ s.time }}</span>
+                  </div>
+                  <span style="display:inline-block; margin-top:5px; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px; background: {{ s.pillBg }}; color: {{ s.pillColor }};">{{ s.statusLabel }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: compact status -->
+      <div style="flex:none; width:380px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vCompact }}</div>
+        <div style="background:#fff; border:1px solid #ece6f4; border-radius:16px; padding:20px; box-shadow:0 8px 24px -16px rgba(80,40,120,.4);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:46px; height:46px; border-radius:13px; background:linear-gradient(140deg,#5b3a8a,#9370DB); color:#fff; font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center;">YK</div>
+              <div>
+                <div style="font-size:14px; font-weight:800;">{{ t.child }}</div>
+                <div style="font-size:11.5px; color:#9b8fb0; font-weight:500;">{{ t.bus.route }}</div>
+              </div>
+            </div>
+            <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:800; color:#fff; background:#663399; padding:7px 12px; border-radius:999px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>{{ t.onboard }}
+            </span>
+          </div>
+          <div style="background:#f6f3fb; border-radius:13px; padding:14px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:32px; height:32px; border-radius:9px; background:#663399; display:flex; align-items:center; justify-content:center; flex:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:12.5px; font-weight:700;">{{ t.bus.boarded }} · {{ busBoardedStop }}</div>
+                <div style="font-size:11px; color:#9b8fb0; font-weight:600;">{{ busBoardedTime }}</div>
+              </div>
+            </div>
+            <div style="height:1px; background:#e7e0f1; margin:13px 0;"></div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:32px; height:32px; border-radius:9px; background:#efe7fb; display:flex; align-items:center; justify-content:center; flex:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c4fb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:12.5px; font-weight:700;">{{ t.bus.nextStop }} · {{ busNextStop }}</div>
+                <div style="font-size:11px; color:#9b8fb0; font-weight:600;">{{ busNextTime }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:13px; color:#b3a9c4;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span style="font-size:11px; font-weight:600;">{{ t.bus.updated }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C: pickup & drop-off -->
+      <div style="flex:none; width:380px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9b8fb0; margin-bottom:10px;">{{ t.vTrip }}</div>
+        <div style="background:#fff; border:1px solid #ece6f4; border-radius:16px; padding:20px; box-shadow:0 8px 24px -16px rgba(80,40,120,.4);">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <!-- pickup -->
+            <div style="background:#f3edfb; border-radius:13px; padding:14px;">
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:12px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#663399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                <span style="font-size:12px; font-weight:800; color:#663399;">{{ t.bus.pickup }}</span>
+              </div>
+              <sc-for list="{{ pickupStops }}" as="ps" hint-placeholder-count="2">
+                <div style="margin-bottom:11px;">
+                  <div style="font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ ps.name }}</div>
+                  <div style="font-size:11px; color:#8579a0; font-weight:600; margin-top:1px;">{{ ps.time }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <!-- dropoff -->
+            <div style="background:#faf0e6; border-radius:13px; padding:14px;">
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:12px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b97a3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                <span style="font-size:12px; font-weight:800; color:#a86c2e;">{{ t.bus.dropoff }}</span>
+              </div>
+              <sc-for list="{{ dropoffStops }}" as="ds" hint-placeholder-count="2">
+                <div style="margin-bottom:11px;">
+                  <div style="font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ ds.name }}</div>
+                  <div style="font-size:11px; color:#a98b6a; font-weight:600; margin-top:1px;">{{ ds.time }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:14px; padding:10px 12px; background:#FFFDD0; border-radius:11px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8a7a16" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+            <span style="font-size:11.5px; font-weight:600; color:#7a6c14;">{{ t.bus.updated }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:2720,&quot;height&quot;:1100},&quot;startLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'ar'&quot;},&quot;canvasBg&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Cool&quot;,&quot;Warm&quot;,&quot;Plain&quot;],&quot;default&quot;:&quot;Cool&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { lang: null, attendance: ['present','present','absent','present','present','present','absent','present'], notifSent: false };
+
+  L(){ return this.state.lang || this.props.startLang || 'en'; }
+
+  setLang(l){ this.setState({ lang: l }); }
+  toggleAt(i, status){ this.setState(s => { const a = [...s.attendance]; a[i] = status; return { attendance: a, notifSent: false }; }); }
+  markAllPresent(){ this.setState(s => ({ attendance: s.attendance.map(()=> 'present'), notifSent: false })); }
+  sendNotif(){ this.setState({ notifSent: true }); }
+
+  data(){
+    return {
+      students: [
+        { en:'Layla Hassan', ar:'ليلى حسن', bg:'#663399' },
+        { en:'Omar Farouk', ar:'عمر فاروق', bg:'#9370DB' },
+        { en:'Sara Idris', ar:'سارة إدريس', bg:'#7c4fb0' },
+        { en:'Yusuf Karim', ar:'يوسف كريم', bg:'#5b3a8a' },
+        { en:'Maryam Saleh', ar:'مريم صالح', bg:'#b08fd6' },
+        { en:'Adam Nasser', ar:'آدم ناصر', bg:'#8055b8' },
+        { en:'Hana Tariq', ar:'هناء طارق', bg:'#6a3fa0' },
+        { en:'Bilal Aziz', ar:'بلال عزيز', bg:'#9b76cf' },
+      ],
+      subjMap: {
+        math:{ en:'Math', ar:'رياضيات', c:'#663399' },
+        sci:{ en:'Science', ar:'علوم', c:'#9370DB' },
+        ara:{ en:'Arabic', ar:'عربي', c:'#7c4fb0' },
+        eng:{ en:'English', ar:'إنجليزي', c:'#b08fd6' },
+        pe:{ en:'P.E.', ar:'رياضة', c:'#5b3a8a' },
+        art:{ en:'Art', ar:'فنون', c:'#c9a8e8' },
+      },
+      grid: [
+        { t:'08:00', k:['math','sci','ara','eng','math'] },
+        { t:'09:15', k:['eng','math','sci','ara','pe'] },
+        { t:'10:30', k:['ara','eng','pe','math','sci'] },
+        { t:'11:45', k:['sci','pe','math','art','ara'] },
+      ],
+      attVals: [92, 88, 95, 90, 94],
+      leaders: [
+        { en:'Maryam S.', ar:'مريم ص.', xp:3120 },
+        { en:'Layla H.', ar:'ليلى ح.', xp:2980 },
+        { en:'Yusuf K.', ar:'يوسف ك.', xp:2450, me:true },
+        { en:'Omar F.', ar:'عمر ف.', xp:2310 },
+        { en:'Hana T.', ar:'هناء ط.', xp:2180 },
+        { en:'Adam N.', ar:'آدم ن.', xp:1990 },
+      ],
+      subjects: [
+        { en:'Mathematics', ar:'الرياضيات', chEn:'Ch. 6 · Quadratics', chAr:'الوحدة 6 · المعادلات', pct:78, c:'#663399' },
+        { en:'Science', ar:'العلوم', chEn:'Ch. 4 · Forces', chAr:'الوحدة 4 · القوى', pct:64, c:'#9370DB' },
+        { en:'Arabic', ar:'اللغة العربية', chEn:'Ch. 8 · Poetry', chAr:'الوحدة 8 · الشعر', pct:90, c:'#7c4fb0' },
+        { en:'English', ar:'اللغة الإنجليزية', chEn:'Ch. 5 · Essays', chAr:'الوحدة 5 · المقالات', pct:55, c:'#b08fd6' },
+      ],
+      badges: [
+        { en:'First Steps', ar:'البداية', icon:'star', earned:true },
+        { en:'Perfect Week', ar:'أسبوع كامل', icon:'flame', earned:true },
+        { en:'Bookworm', ar:'عاشق الكتب', icon:'book', earned:true },
+        { en:'Sharp Shooter', ar:'إصابة دقيقة', icon:'target', earned:true },
+        { en:'Top 3', ar:'المركز الثالث', icon:'trophy', earned:false },
+        { en:'Streak Master', ar:'بطل التتابع', icon:'bolt', earned:false },
+      ],
+      stops: [
+        { en:'Al-Noor St', ar:'شارع النور', time:'7:42 AM', status:'boarded' },
+        { en:'Jasmine Ave', ar:'شارع الياسمين', time:'7:51 AM', status:'boarded' },
+        { en:'Cedar Roundabout', ar:'دوار الأرز', time:'~7:58 AM', status:'next' },
+        { en:'School Gate', ar:'بوابة المدرسة', time:'8:05 AM', status:'pending' },
+      ],
+    };
+  }
+
+  strings(){
+    const en = {
+      tagline:'Be the spark',
+      compareTitle:'Novora — Dashboard explorations',
+      compareSub:'Teacher & Student dashboards · stat-card, leaderboard & bus-status variations',
+      frameTeacher:'01 — Teacher dashboard',
+      frameStudent:'02 — Student dashboard',
+      roleTeacher:'Teacher', roleStudent:'Student',
+      nav:{ dashboard:'Dashboard', schedule:'Schedule', attendance:'Attendance', exams:'Exams', students:'Students', reports:'Reports', leaderboard:'Leaderboard', badges:'Badges', subjects:'Subjects' },
+      helpTitle:'Need a hand?', helpSub:'Reach support over WhatsApp anytime.', helpChat:'Chat with us',
+      teacherTitle:'Good morning, Ms. Sara', teacherSub:'Tuesday, 20 June · Grade 9 — Section B',
+      search:'Search students, classes…',
+      stat:{ classes:"Today's classes", present:'Students present', grading:'Pending grading', avgAtt:'Avg. attendance', xp:'Total XP', level:'Level', rank:'Class rank', streak:'Day streak' },
+      weeklyAttendance:'Weekly attendance', thisWeek:'This week',
+      schedule:'Weekly schedule',
+      attendanceTitle:'Bulk attendance', present:'present', markAll:'Mark all present', presentShort:'Present', absentShort:'Absent',
+      sendNotif:'Send WhatsApp to parents', notifConfirm:'WhatsApp sent to 6 parents · 2 absentees flagged',
+      examBuilder:'Quick exam builder', q1:'Solve for x in 3x + 7 = 22', q2:'Explain Newton’s first law', pts:'pts', essay:'Essay', addQuestion:'Add question', publish:'Publish exam',
+      studentTitle:'Hi, Yusuf 👋', studentSub:'Level 7 · Grade 9 — Section B',
+      mySubjects:'My subjects', continue:'Continue', viewAll:'View all',
+      classLeaderboard:'Class leaderboard', thisMonth:'This month', you:'You',
+      myBadges:'My badges', badgesEarned:'4 of 15 earned', locked:'Locked',
+      progressOverTime:'Progress over time', xpToNext:'550 XP to Level 8',
+      statVariations:'Stat card — three treatments', leaderboardVariations:'Leaderboard widget — three variations', busVariations:'Bus status card — three variations',
+      vSolid:'A · Solid lavender', vIcon:'B · Icon + trend', vGradient:'C · Gradient + sparkline',
+      vPodium:'A · Podium', vList:'B · Ranked list', vMe:'C · Your standing',
+      vRoute:'A · Route timeline', vCompact:'B · Compact status', vTrip:'C · Pickup & drop-off',
+      bus:{ boarded:'Boarded', absent:'Absent', waiting:'Next stop', pending:'Scheduled', nextStop:'Next stop', updated:'Updated 2 min ago', pickup:'Pickup', dropoff:'Drop-off', route:'Route 7 · Morning', driver:'Driver: Mr. Khalid' },
+      present6:'Students present', trend:'vs last week', rank:'Rank', xp:'XP', child:'Yusuf Karim', onboard:'On board',
+    };
+    const ar = {
+      tagline:'كن الشرارة',
+      compareTitle:'نوفورا — استكشافات لوحات التحكم',
+      compareSub:'لوحتا المعلم والطالب · أنماط البطاقات والمتصدرين وحالة الحافلة',
+      frameTeacher:'٠١ — لوحة المعلم',
+      frameStudent:'٠٢ — لوحة الطالب',
+      roleTeacher:'معلم', roleStudent:'طالب',
+      nav:{ dashboard:'الرئيسية', schedule:'الجدول', attendance:'الحضور', exams:'الاختبارات', students:'الطلاب', reports:'التقارير', leaderboard:'المتصدرون', badges:'الأوسمة', subjects:'المواد' },
+      helpTitle:'تحتاج مساعدة؟', helpSub:'تواصل مع الدعم عبر واتساب في أي وقت.', helpChat:'تحدّث معنا',
+      teacherTitle:'صباح الخير، أ. سارة', teacherSub:'الثلاثاء، 20 يونيو · الصف التاسع — شعبة ب',
+      search:'ابحث عن طالب أو صف…',
+      stat:{ classes:'حصص اليوم', present:'الطلاب الحاضرون', grading:'بانتظار التصحيح', avgAtt:'متوسط الحضور', xp:'مجموع النقاط', level:'المستوى', rank:'ترتيب الصف', streak:'أيام متتالية' },
+      weeklyAttendance:'الحضور الأسبوعي', thisWeek:'هذا الأسبوع',
+      schedule:'الجدول الأسبوعي',
+      attendanceTitle:'تسجيل الحضور', present:'حاضر', markAll:'تحضير الجميع', presentShort:'حاضر', absentShort:'غائب',
+      sendNotif:'إرسال واتساب لأولياء الأمور', notifConfirm:'تم الإرسال إلى 6 أولياء أمور · رصد غيابين',
+      examBuilder:'إنشاء اختبار سريع', q1:'أوجد قيمة س في ٣س + ٧ = ٢٢', q2:'اشرح قانون نيوتن الأول', pts:'درجة', essay:'مقالي', addQuestion:'إضافة سؤال', publish:'نشر الاختبار',
+      studentTitle:'مرحباً يوسف 👋', studentSub:'المستوى 7 · الصف التاسع — شعبة ب',
+      mySubjects:'موادي', continue:'متابعة', viewAll:'عرض الكل',
+      classLeaderboard:'متصدرو الصف', thisMonth:'هذا الشهر', you:'أنت',
+      myBadges:'أوسمتي', badgesEarned:'4 من 15', locked:'مقفل',
+      progressOverTime:'التقدم عبر الوقت', xpToNext:'550 نقطة للمستوى 8',
+      statVariations:'بطاقة إحصائية — ثلاثة أنماط', leaderboardVariations:'قائمة المتصدرين — ثلاثة أنماط', busVariations:'حالة الحافلة — ثلاثة أنماط',
+      vSolid:'أ · بنفسجي فاتح', vIcon:'ب · أيقونة واتجاه', vGradient:'ج · تدرّج ومخطط',
+      vPodium:'أ · منصة التتويج', vList:'ب · قائمة مرتبة', vMe:'ج · ترتيبك',
+      vRoute:'أ · مسار الرحلة', vCompact:'ب · حالة مختصرة', vTrip:'ج · الصعود والنزول',
+      bus:{ boarded:'صعد', absent:'غائب', waiting:'المحطة التالية', pending:'مجدولة', nextStop:'المحطة التالية', updated:'تحديث قبل دقيقتين', pickup:'الصعود', dropoff:'النزول', route:'المسار 7 · صباحاً', driver:'السائق: أ. خالد' },
+      present6:'الطلاب الحاضرون', trend:'مقارنة بالأسبوع الماضي', rank:'الترتيب', xp:'نقطة', child:'يوسف كريم', onboard:'على متن الحافلة',
+    };
+    return { en, ar };
+  }
+
+  initials(name){ const p = name.trim().split(/\s+/); return ((p[0]||'')[0]||'') + ((p[1]||'')[0]||''); }
+
+  renderVals(){
+    const lang = this.L();
+    const isAr = lang === 'ar';
+    const dir = isAr ? 'rtl' : 'ltr';
+    const t = this.strings()[lang];
+    const D = this.data();
+    const nm = (o)=> isAr ? o.ar : o.en;
+    const att = this.state.attendance;
+
+    const pill = (active)=> active
+      ? 'border:none; background:#663399; color:#fff; font-weight:700; font-size:13px; padding:7px 14px; border-radius:9px; cursor:pointer; font-family:inherit; min-width:42px;'
+      : 'border:none; background:transparent; color:#8579a0; font-weight:700; font-size:13px; padding:7px 14px; border-radius:9px; cursor:pointer; font-family:inherit; min-width:42px;';
+
+    const presBtn = (on)=> on
+      ? 'border:none; background:#663399; color:#fff; font-weight:700; font-size:10.5px; padding:5px 10px; border-radius:7px; cursor:pointer; font-family:inherit;'
+      : 'border:1px solid #ece6f4; background:#fff; color:#a99cbe; font-weight:700; font-size:10.5px; padding:5px 10px; border-radius:7px; cursor:pointer; font-family:inherit;';
+    const absBtn = (on)=> on
+      ? 'border:none; background:#fdf0c4; color:#8a6d12; font-weight:700; font-size:10.5px; padding:5px 10px; border-radius:7px; cursor:pointer; font-family:inherit;'
+      : 'border:1px solid #ece6f4; background:#fff; color:#a99cbe; font-weight:700; font-size:10.5px; padding:5px 10px; border-radius:7px; cursor:pointer; font-family:inherit;';
+
+    const students = D.students.map((s, i) => ({
+      name: nm(s), initials: this.initials(s.en), avatarBg: s.bg,
+      setPresent: () => this.toggleAt(i, 'present'),
+      setAbsent: () => this.toggleAt(i, 'absent'),
+      presentBtn: presBtn(att[i] === 'present'),
+      absentBtn: absBtn(att[i] === 'absent'),
+    }));
+    const presentCount = att.filter(a => a === 'present').length;
+
+    const maxAtt = Math.max(...D.attVals);
+    const scheduleDays = (isAr ? ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس'] : ['Mon','Tue','Wed','Thu','Fri']);
+    const attBars = D.attVals.map((v, i) => ({ val:v, h: Math.round(v/maxAtt*100), day: scheduleDays[i] }));
+    const scheduleRows = D.grid.map(r => ({ time:r.t, cells: r.k.map(k => ({ label: nm(D.subjMap[k]), color: D.subjMap[k].c })) }));
+
+    const medal = ['#C9A227','#8E97A3','#B97A3A'];
+    const avatarBgs = ['#663399','#9370DB','#5b3a8a','#7c4fb0','#6a3fa0','#b08fd6'];
+    const maxXp = D.leaders[0].xp;
+    const leaders = D.leaders.map((l, i) => {
+      const rank = i+1;
+      return {
+        name: nm(l), me:!!l.me, rank,
+        initials:this.initials(l.en),
+        rankLabel: rank<=3 ? ['🥇','🥈','🥉'][i] : String(rank),
+        rankColor: rank<=3 ? medal[i] : '#a99cbe',
+        avatarBg: avatarBgs[i],
+        xpShort: l.xp.toLocaleString(),
+        xpLabel: l.xp.toLocaleString() + ' ' + t.xp,
+        barW: Math.round(l.xp / maxXp * 100),
+        rowBg: l.me ? '#f3edfb' : '#fbfaff',
+        rowBorder: l.me ? '1.5px solid #cbb6ec' : '1px solid #f3effa',
+      };
+    });
+    const podium = [
+      { ...leaders[1], barH:62 },
+      { ...leaders[0], barH:92, crown:true },
+      { ...leaders[2], barH:46 },
+    ];
+    const nearMe = leaders.slice(1, 4).map(l => ({ ...l, meBg: l.me ? 'rgba(255,253,208,.16)' : 'transparent' }));
+    const stops = D.stops.map(s => ({ name:nm(s), time:s.time, status:s.status,
+      statusLabel: s.status==='boarded'? t.bus.boarded : s.status==='next'? t.bus.waiting : t.bus.pending }));
+    const stopDot = { boarded:'#663399', next:'#9370DB', pending:'#d8cce9' };
+    const stopsView = stops.map((s, i) => ({
+      ...s, dot: stopDot[s.status], isLast: i === stops.length-1, notLast: i !== stops.length-1,
+      pillBg: s.status==='boarded' ? '#ece5f7' : s.status==='next' ? '#efe7fb' : '#f3f1f7',
+      pillColor: s.status==='boarded' ? '#663399' : s.status==='next' ? '#7c4fb0' : '#a99cbe',
+    }));
+    const busSummary = { boardedStop: stops[0].name, boardedTime: stops[0].time, nextStopName: stops[2].name, nextTime: stops[2].time };
+    const pickupStops = stops.slice(0, 2).map(s => ({ name:s.name, time:s.time, done:true }));
+    const dropoffStops = [
+      { name: stops[3].name, time:'2:10 PM', done:false },
+      { name: stops[0].name, time:'2:35 PM', done:false },
+    ];
+    const subjects = D.subjects.map(s => ({ name:nm(s), chapter: isAr ? s.chAr : s.chEn, pct:s.pct, color:s.c }));
+    const badges = D.badges.map(b => ({ name:nm(b), icon:b.icon, earned:b.earned, locked:!b.earned,
+      badgeBg: b.earned ? '#f3edfb' : '#f1f0f4', op: b.earned ? 1 : 0.6 }));
+
+    const canvasMap = { Cool:'#eeecf4', Warm:'#f3ece4', Plain:'#f4f3f6' };
+    const canvasBg = canvasMap[this.props.canvasBg] || canvasMap.Cool;
+
+    return {
+      lang, isAr, dir, t, canvasBg,
+      toEn: () => this.setLang('en'),
+      toAr: () => this.setLang('ar'),
+      enPillStyle: pill(lang === 'en'),
+      arPillStyle: pill(lang === 'ar'),
+      teacherInitials:'SA',
+      attBars, scheduleDays, scheduleRows,
+      students, markAll: () => this.markAllPresent(), sendNotif: () => this.sendNotif(),
+      presentCount, totalCount: students.length, notifSent: this.state.notifSent,
+      leaders, subjects, badges, stops,
+      podium, nearMe, stopsView, pickupStops, dropoffStops,
+      busBoardedStop: busSummary.boardedStop, busBoardedTime: busSummary.boardedTime,
+      busNextStop: busSummary.nextStopName, busNextTime: busSummary.nextTime,
+    };
+  }
+}
+</script>
+</body>
+</html>

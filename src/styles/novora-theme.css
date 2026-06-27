@@ -1,0 +1,25 @@
+/* ============================================================
+   Supplementary tokens for dashboards re-themed to the light
+   Novora design. Purely ADDITIVE — must not redefine any token
+   already in theme.css (the single source of truth) with a
+   different value, or it would alter existing dashboards.
+   ============================================================ */
+:root {
+  --nv-bg:        #f6f3fb;   /* page canvas for re-themed admin dashboards */
+  --nv-hover:     #f5f1fb;   /* nav hover */
+  --nv-chip:      #f3edfb;   /* purple chips (== --nv-surface-3) */
+  --nv-muted:     #8579a0;   /* alias of --nv-text-soft */
+  --nv-soft:      #6b5b7e;   /* alias of --nv-text-muted */
+  --nv-radius:    16px;
+  --nv-radius-sm: 11px;
+  --nv-shadow:    0 1px 3px rgba(40,20,60,.08), 0 24px 60px -24px rgba(80,40,120,.28);
+  --nv-shadow-sm: 0 2px 8px rgba(80,40,120,.05);
+  --nv-grad:      linear-gradient(140deg, #663399, #9370DB);
+
+  /* status / role accent colors (light variants) */
+  --nv-green:  #16a34a;  --nv-green-bg:  #e7f6ed;
+  --nv-amber:  #d97706;  --nv-amber-bg:  #fdf0db;
+  --nv-red:    #dc2626;  --nv-red-bg:    #fbe9e9;
+  --nv-blue:   #2563eb;  --nv-blue-bg:   #e8eefc;
+  --nv-teal:   #0d9488;  --nv-teal-bg:   #e0f5f2;
+}

@@ -1,0 +1,268 @@
+/* ============================================================
+   Novora Design System — tokens extracted from the approved
+   "Novora Dashboards" mockup. Single source of truth for the
+   whole app. Light lavender theme, bilingual (EN/AR + RTL).
+   ============================================================ */
+
+:root {
+  /* ---- Brand purples ---- */
+  --nv-primary: #663399;          /* rebeccapurple — main brand */
+  --nv-primary-hover: #56297f;
+  --nv-primary-deep: #3a2256;
+  --nv-primary-2: #5b3a8a;
+  --nv-primary-3: #7c4fb0;
+  --nv-light: #9370DB;            /* mediumpurple */
+  --nv-light-2: #b08fd6;
+  --nv-lavender: #E6E6FA;         /* solid stat-card bg */
+  --nv-cream: #FFFDD0;            /* accent / highlights */
+  --nv-linen: #faf0e6;            /* warm accent */
+
+  /* ---- Surfaces ---- */
+  --nv-canvas: #eeecf4;           /* app background (Cool) */
+  --nv-canvas-warm: #f3ece4;
+  --nv-frame: #fbfaff;            /* dashboard frame bg */
+  --nv-surface: #ffffff;          /* cards */
+  --nv-surface-2: #f6f3fb;        /* search / muted fills */
+  --nv-surface-3: #f3edfb;        /* pill fills */
+
+  /* ---- Text ---- */
+  --nv-text: #2a1f38;             /* headings */
+  --nv-text-strong: #3a2256;
+  --nv-text-2: #5a4a70;
+  --nv-text-muted: #6b5b7e;
+  --nv-text-soft: #8579a0;
+  --nv-text-faint: #9b8fb0;
+  --nv-text-disabled: #b3a9c4;
+
+  /* ---- Borders ---- */
+  --nv-border: #f0ecf6;
+  --nv-border-2: #ece6f4;
+  --nv-border-3: #efeaf7;
+
+  /* ---- Status ---- */
+  --nv-success: #5b8a3a;
+  --nv-success-bg: #eef6e6;
+  --nv-warn: #8a6d12;
+  --nv-warn-bg: #fdf6d6;
+  --nv-gold: #C9A227;
+  --nv-silver: #8E97A3;
+  --nv-bronze: #B97A3A;
+
+  /* ---- Typography ---- */
+  --nv-font: 'Plus Jakarta Sans', 'Cairo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ---- Radii ---- */
+  --nv-r-sm: 7px;
+  --nv-r-md: 11px;
+  --nv-r-lg: 14px;
+  --nv-r-xl: 16px;
+  --nv-r-2xl: 18px;
+  --nv-r-pill: 999px;
+
+  /* ---- Shadows (purple-tinted, soft) ---- */
+  --nv-shadow-card: 0 1px 3px rgba(40, 20, 60, .08);
+  --nv-shadow-soft: 0 8px 24px -16px rgba(80, 40, 120, .4);
+  --nv-shadow-pop: 0 12px 28px -16px rgba(102, 51, 153, .7);
+  --nv-shadow-frame: 0 1px 3px rgba(40, 20, 60, .08), 0 24px 60px -24px rgba(80, 40, 120, .28);
+  --nv-shadow-nav: 0 6px 16px -4px rgba(102, 51, 153, .5);
+
+  /* ---- Gradients ---- */
+  --nv-grad-brand: linear-gradient(150deg, #663399, #9370DB);
+  --nv-grad-brand-2: linear-gradient(140deg, #5b3a8a, #9370DB);
+  --nv-grad-deep: linear-gradient(160deg, #3a2256, #663399);
+  --nv-grad-bar: linear-gradient(180deg, #9370DB, #663399);
+  --nv-grad-progress: linear-gradient(90deg, #9370DB, #663399);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--nv-font);
+  color: var(--nv-text);
+  background: var(--nv-canvas);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Arabic gets Cairo first for better glyph shaping */
+:root[dir="rtl"] body { --nv-font: 'Cairo', 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; }
+
+::-webkit-scrollbar { height: 12px; width: 12px; }
+::-webkit-scrollbar-thumb {
+  background: #d7cee6;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+/* ============================================================
+   Reusable primitives — used across every dashboard
+   ============================================================ */
+
+/* Surface card */
+.nv-card {
+  background: var(--nv-surface);
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-r-xl);
+  padding: 18px;
+}
+.nv-card--soft { box-shadow: var(--nv-shadow-soft); border-color: var(--nv-border-2); }
+
+/* Section title row with divider */
+.nv-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.nv-section-head h2 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--nv-text);
+  margin: 0;
+}
+.nv-section-head .nv-rule { flex: 1; height: 1px; background: #ddd5e8; }
+
+/* Pills */
+.nv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--nv-r-pill);
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--nv-surface-3);
+  color: var(--nv-primary);
+}
+.nv-pill--warm { background: var(--nv-warn-bg); color: var(--nv-warn); }
+.nv-pill--success { background: var(--nv-success-bg); color: var(--nv-success); }
+
+/* Buttons */
+.nv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--nv-r-md);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: background .15s ease, transform .1s ease, box-shadow .15s ease;
+}
+.nv-btn:active { transform: scale(.98); }
+.nv-btn--primary { background: var(--nv-primary); color: #fff; }
+.nv-btn--primary:hover { background: var(--nv-primary-hover); }
+.nv-btn--soft { background: var(--nv-surface-3); color: var(--nv-primary); }
+.nv-btn--soft:hover { background: #e9def8; }
+.nv-btn--lavender { background: var(--nv-lavender); color: var(--nv-primary); }
+.nv-btn--ghost {
+  background: transparent;
+  border: 1.5px dashed #cbbce4;
+  color: var(--nv-text-soft);
+}
+.nv-btn--ghost:hover { border-color: var(--nv-light); color: var(--nv-primary); }
+
+/* Inputs */
+.nv-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--nv-text);
+  background: var(--nv-surface-2);
+  border: 1px solid var(--nv-border-3);
+  border-radius: var(--nv-r-md);
+  padding: 11px 13px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.nv-input::placeholder { color: var(--nv-text-faint); }
+.nv-input:focus {
+  border-color: var(--nv-light);
+  box-shadow: 0 0 0 3px rgba(147, 112, 219, .18);
+}
+
+/* Avatar chip */
+.nv-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--nv-r-lg);
+  background: var(--nv-grad-brand);
+  color: #fff;
+  font-weight: 700;
+  flex: none;
+}
+
+/* Progress bar */
+.nv-progress {
+  height: 7px;
+  border-radius: var(--nv-r-pill);
+  background: var(--nv-border);
+  overflow: hidden;
+}
+.nv-progress > i {
+  display: block;
+  height: 100%;
+  border-radius: var(--nv-r-pill);
+  background: var(--nv-grad-progress);
+}
+
+/* Stat card (solid lavender default) */
+.nv-stat {
+  background: var(--nv-lavender);
+  border-radius: var(--nv-r-lg);
+  padding: 16px;
+}
+.nv-stat__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nv-primary);
+}
+.nv-stat__value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--nv-text-strong);
+  margin-top: 12px;
+  line-height: 1;
+}
+.nv-stat__label {
+  font-size: 12.5px;
+  color: var(--nv-text-muted);
+  font-weight: 600;
+  margin-top: 5px;
+}
+.nv-stat--gradient {
+  background: var(--nv-grad-brand);
+  color: #fff;
+}
+.nv-stat--gradient .nv-stat__value { color: #fff; }
+.nv-stat--gradient .nv-stat__label { color: rgba(255, 255, 255, .85); }
+
+/* Fade-in helper */
+@keyframes nvFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.nv-fade-in { animation: nvFadeIn .35s ease both; }

@@ -1,0 +1,6 @@
+@echo off
+echo Starting Novora Development Environment...
+echo Starting Backend (Port 5000) and Frontend (Port 5173)...
+
+cd /d "%~dp0"
+npm run dev
