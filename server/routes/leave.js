@@ -5,12 +5,11 @@ import User from '../models/User.js';
 import protect from '../middleware/authMiddleware.js';
 import { allowRoles } from '../middleware/roleMiddleware.js';
 import { notifyUsers, notifyUser } from '../utils/notify.js';
+import { schoolOf, midnight } from '../utils/requestContext.js';
 
 const router = express.Router();
 router.use(protect);
 
-const schoolOf = (req) => req.user.schoolId || req.query.schoolId || req.body.schoolId;
-const midnight = (d) => { const x = new Date(d); x.setUTCHours(0, 0, 0, 0); return x; };
 
 // Submit a leave request (teacher) — notifies all school admins
 // POST /api/leave { fromDate, toDate, reason }

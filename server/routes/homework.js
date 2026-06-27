@@ -4,11 +4,11 @@ import Enrollment from '../models/Enrollment.js';
 import protect from '../middleware/authMiddleware.js';
 import { allowRoles } from '../middleware/roleMiddleware.js';
 import { notifyUsers } from '../utils/notify.js';
+import { schoolOf } from '../utils/requestContext.js';
 
 const router = express.Router();
 router.use(protect);
 
-const schoolOf = (req) => req.user.schoolId || req.query.schoolId || req.body.schoolId;
 
 // Create (teacher) — notifies students actively enrolled in the classroom
 // POST /api/homework { classroomId, subjectId, title, description, dueDate }

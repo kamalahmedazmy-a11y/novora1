@@ -1,4 +1,18 @@
-# Logs
+# ───────────────────────── Dependencies ─────────────────────────
+node_modules
+.pnp
+.pnp.js
+
+# ───────────────────────── Build output ─────────────────────────
+dist
+dist-ssr
+build
+.vite
+.cache
+*.local
+*.tsbuildinfo
+
+# ───────────────────────── Logs ─────────────────────────
 logs
 *.log
 npm-debug.log*
@@ -7,24 +21,38 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Environment / secrets
+# ───────────────────────── Environment / secrets ─────────────────────────
 .env
 .env.*
 !.env.example
 
-# Editor directories and files
+# ───────────────────────── Tests / coverage ─────────────────────────
+coverage
+.nyc_output
+
+# ───────────────────────── Runtime data ─────────────────────────
+# User-uploaded files (served from disk; should not be committed)
+server/uploads/
+# Stray local SQLite artifact (project uses MongoDB)
+*.db
+
+# ───────────────────────── Editor / OS ─────────────────────────
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-server/uploads/
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# ───────────────────────── Local tooling ─────────────────────────
+# Claude Code local agent config
+.claude/
+
+# ───────────────────────── Local-only reference assets ─────────────────────────
+# Design reference (large mockups + personal images) — kept out of the public repo
+Design scope and specifications/

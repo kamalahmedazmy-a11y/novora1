@@ -5,11 +5,11 @@ import Enrollment from '../models/Enrollment.js';
 import Classroom from '../models/Classroom.js';
 import protect from '../middleware/authMiddleware.js';
 import { allowRoles } from '../middleware/roleMiddleware.js';
+import { schoolOf } from '../utils/requestContext.js';
 
 const router = express.Router();
 router.use(protect);
 
-const schoolOf = (req) => req.user.schoolId || req.query.schoolId || req.body.schoolId;
 
 // Find active students whose classroom is at the given grade level.
 // Classroom has no gradeLevel field — grade is encoded in the name ("Grade N-X"),

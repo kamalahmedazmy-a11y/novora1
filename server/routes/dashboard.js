@@ -10,6 +10,7 @@ import Staff from '../models/Staff.js';
 import Subject from '../models/Subject.js';
 import protect from '../middleware/authMiddleware.js';
 import { allowRoles } from '../middleware/roleMiddleware.js';
+import { schoolOf as resolveSchoolId } from '../utils/requestContext.js';
 
 const router = express.Router();
 
@@ -19,7 +20,6 @@ router.use(allowRoles('school_admin', 'super_admin'));
 // Resolve the school to operate on:
 //  - school_admin -> their own school
 //  - super_admin  -> must pass ?schoolId=... (single-school: the only school)
-const resolveSchoolId = (req) => req.user.schoolId || req.query.schoolId || req.body.schoolId;
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

@@ -56,7 +56,14 @@
       "Bash(where gh.exe)",
       "Bash(where.exe gh *)",
       "Bash(git add *)",
-      "Bash(grep -E \"\\\\.env$|node_modules|school\\\\.db|/uploads/\")"
+      "Bash(grep -E \"\\\\.env$|node_modules|school\\\\.db|/uploads/\")",
+      "Bash(grep -E \"^\\\\.env$\")",
+      "Bash(git config *)",
+      "Bash(du -sh node_modules)",
+      "Bash(du -sh .git)",
+      "Bash(du -sh server/uploads)",
+      "Bash(du -sh dist)",
+      "Bash(du -sh build)"
     ]
   }
 }
