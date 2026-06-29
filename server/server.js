@@ -63,12 +63,26 @@ app.use(cors(allowedOrigins.length
 app.use(express.json({ limit: '1mb', extended: false }));
 
 // Rate limiting: a general cap on the whole API + a strict cap on auth.
-const apiLimiter = rateLimit({ windowMs: 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
+// Both return JSON so the frontend can always parse the response.
+const apiLimiter = rateLimit({
+    windowMs: 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false,
+    message: { message: 'Too many requests, please slow down.' },
+});
 const authLimiter = rateLimit({
     windowMs: 60 * 1000, max: 5, standardHeaders: true, legacyHeaders: false,
     message: { message: 'Too many attempts, please try again in a minute.' },
 });
 app.use('/api', apiLimiter);
+
+// DB guard: if MongoDB is not connected, return a clean JSON 503 instead of
+// hanging or returning an empty body. (readyState 1 = connected.)
+app.use('/api', (req, res, next) => {
+    if (req.path === '/health') return next(); // health endpoint reports status itself
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({ message: 'Database temporarily unavailable. Please try again shortly.' });
+    }
+    next();
+});
 
 // Health check (for monitoring / load balancers)
 app.get('/api/health', (req, res) => {
@@ -107,9 +121,16 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/files', fileRoutes);
 app.use('/api/bus', busRoutes);
 
+// JSON 404 for any unmatched API route (prevents Express' default HTML 404,
+// which would make the frontend's response.json() throw "Unexpected end of JSON input").
+app.use('/api', (req, res) => {
+    res.status(404).json({ message: `Route not found: ${req.method} ${req.originalUrl}` });
+});
+
 // Error Handling Middleware — log full detail server-side, never leak it to
-// the client on a 500 in production.
+// the client on a 500 in production. ALWAYS responds with JSON.
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+    if (res.headersSent) return next(err);
     const status = err.status || 500;
     console.error('Server Error:', err.stack || err.message);
     const isProd = process.env.NODE_ENV === 'production';
@@ -118,6 +139,11 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
         : (isProd ? 'Internal Server Error' : (err.message || 'Internal Server Error'));
     res.status(status).json({ message });
 });
+
+// Last-resort safety nets: never let an unhandled error silently kill the
+// process and leave the frontend with an empty response.
+process.on('unhandledRejection', (reason) => console.error('UnhandledRejection:', reason));
+process.on('uncaughtException', (err) => console.error('UncaughtException:', err.message));
 
 const PORT = process.env.PORT || 5000;
 

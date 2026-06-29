@@ -4,6 +4,21 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
+// Safely parse a fetch Response as JSON. If the body is empty or not JSON
+// (e.g. the server is down and a proxy returned an empty/HTML response), this
+// returns a clear error object instead of throwing "Unexpected end of JSON input".
+const safeJson = async (res) => {
+  const text = await res.text();
+  if (!text) {
+    return { message: res.ok ? '' : `Server unavailable (HTTP ${res.status})` };
+  }
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { message: `Unexpected server response (HTTP ${res.status})` };
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +80,7 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password, subdomain: activeSubdomain })
       });
 
-      const data = await res.json();
+      const data = await safeJson(res);
 
       if (!res.ok) {
         throw new Error(data.message || data.msg || 'Login failed');
@@ -101,7 +116,7 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ name, email, password, role, schoolId, parentOf })
       });
 
-      const data = await res.json();
+      const data = await safeJson(res);
 
       if (!res.ok) {
         throw new Error(data.message || data.msg || 'Registration failed');

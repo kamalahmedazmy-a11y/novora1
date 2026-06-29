@@ -69,7 +69,9 @@
       "Bash(node --check server/middleware/validate.js)",
       "Bash(node --check server/validation/authSchemas.js)",
       "Bash(node --check server/validation/commonSchemas.js)",
-      "Bash(git commit -q -m ' *)"
+      "Bash(git commit -q -m ' *)",
+      "Bash(timeout 25 node --input-type=module -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"vite 64034: %{http_code}\\\\n\" http://localhost:64034/)"
     ]
   }
 }
