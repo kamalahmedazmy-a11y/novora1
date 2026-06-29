@@ -43,7 +43,7 @@ export async function sendEmail({ to, subject, text, html } = {}) {
         }
     }
 
-    console.log('[mailer:console] EMAIL ->', to, '|', subject);
+    console.log('[mailer:console] EMAIL ->', to, '|', subject, text ? '| ' + text : '');
     return { delivered: false, channel: 'console' };
 }
 

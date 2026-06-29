@@ -17,6 +17,34 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // Silent refresh: access tokens are short-lived (15m), so proactively rotate
+  // them with the stored refresh token to keep the session alive.
+  useEffect(() => {
+    const refreshAccess = async () => {
+      const stored = localStorage.getItem('novora_user');
+      if (!stored) return;
+      const u = JSON.parse(stored);
+      if (!u?.refreshToken) return;
+      try {
+        const res = await fetch('/api/auth/refresh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: u.refreshToken }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const updated = { ...u, token: data.token, refreshToken: data.refreshToken };
+          localStorage.setItem('novora_user', JSON.stringify(updated));
+          setUser(updated);
+        }
+      } catch { /* offline / transient — keep current token */ }
+    };
+    // refresh once on load (in case the stored access token is stale), then every 13 minutes
+    refreshAccess();
+    const id = setInterval(refreshAccess, 13 * 60 * 1000);
+    return () => clearInterval(id);
+  }, []);
+
   const login = async (email, password, subdomain = null) => {
     try {
       // If subdomain is not explicitly passed, try to detect it from the hostname
@@ -92,6 +120,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // Best-effort: revoke the refresh token server-side.
+    try {
+      const stored = localStorage.getItem('novora_user');
+      const rt = stored && JSON.parse(stored)?.refreshToken;
+      if (rt) {
+        fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: rt }),
+        }).catch(() => {});
+      }
+    } catch { /* ignore */ }
     setUser(null);
     localStorage.removeItem('novora_user');
   };

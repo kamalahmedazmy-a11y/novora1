@@ -4,7 +4,15 @@ dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import connectDB from './config/db.js';
+
+// Fail fast if critical secrets are missing — never fall back to a weak default.
+if (!process.env.JWT_SECRET) {
+    console.error('FATAL: JWT_SECRET is not set. Refusing to start.');
+    process.exit(1);
+}
 
 // Import Middleware
 import protect from './middleware/authMiddleware.js';
@@ -44,11 +52,36 @@ const app = express();
 connectDB();
 
 // Init Middleware
-app.use(express.json({ extended: false }));
-app.use(cors());
+app.use(helmet()); // secure HTTP headers
+
+// CORS — restrict to known origins when configured, otherwise allow (dev).
+const allowedOrigins = (process.env.CLIENT_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean);
+app.use(cors(allowedOrigins.length
+    ? { origin: allowedOrigins, credentials: true }
+    : {}));
+
+app.use(express.json({ limit: '1mb', extended: false }));
+
+// Rate limiting: a general cap on the whole API + a strict cap on auth.
+const apiLimiter = rateLimit({ windowMs: 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
+const authLimiter = rateLimit({
+    windowMs: 60 * 1000, max: 5, standardHeaders: true, legacyHeaders: false,
+    message: { message: 'Too many attempts, please try again in a minute.' },
+});
+app.use('/api', apiLimiter);
+
+// Health check (for monitoring / load balancers)
+app.get('/api/health', (req, res) => {
+    const dbUp = mongoose.connection.readyState === 1;
+    res.status(dbUp ? 200 : 503).json({
+        status: dbUp ? 'ok' : 'degraded',
+        db: dbUp ? 'connected' : 'disconnected',
+        uptime: process.uptime(),
+    });
+});
 
 // Define Routes
-app.use('/api/auth', authRoutes); // Public / internal routing
+app.use('/api/auth', authLimiter, authRoutes); // Public / internal routing (brute-force protected)
 
 // Protected and Tenant-scoped routes
 app.use('/api/progress', protect, tenantMiddleware, progressRoutes);
@@ -74,12 +107,16 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/files', fileRoutes);
 app.use('/api/bus', busRoutes);
 
-// Error Handling Middleware
-app.use((err, req, res, next) => {
-    console.error('Server Error:', err.message);
-    res.status(err.status || 500).json({
-        message: err.message || 'Internal Server Error'
-    });
+// Error Handling Middleware — log full detail server-side, never leak it to
+// the client on a 500 in production.
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+    const status = err.status || 500;
+    console.error('Server Error:', err.stack || err.message);
+    const isProd = process.env.NODE_ENV === 'production';
+    const message = (status < 500)
+        ? (err.message || 'Request error')          // client errors: safe to show
+        : (isProd ? 'Internal Server Error' : (err.message || 'Internal Server Error'));
+    res.status(status).json({ message });
 });
 
 const PORT = process.env.PORT || 5000;

@@ -63,7 +63,13 @@
       "Bash(du -sh .git)",
       "Bash(du -sh server/uploads)",
       "Bash(du -sh dist)",
-      "Bash(du -sh build)"
+      "Bash(du -sh build)",
+      "Bash(node --check server/models/AuditLog.js)",
+      "Bash(node --check server/utils/audit.js)",
+      "Bash(node --check server/middleware/validate.js)",
+      "Bash(node --check server/validation/authSchemas.js)",
+      "Bash(node --check server/validation/commonSchemas.js)",
+      "Bash(git commit -q -m ' *)"
     ]
   }
 }

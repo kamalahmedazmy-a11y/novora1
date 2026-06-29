@@ -48,7 +48,15 @@ const userSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
-    }
+    },
+    // --- Auth/security (Phase 0) ---
+    isVerified: {
+        type: Boolean,
+        default: true   // existing accounts stay usable; new sign-ups set to false
+    },
+    verifyToken: { type: String, default: '' },
+    resetPasswordToken: { type: String, default: '' },
+    resetPasswordExpires: { type: Date, default: null }
 }, { timestamps: true });
 
 // Email must be unique within the same school (or globally for super_admin)
